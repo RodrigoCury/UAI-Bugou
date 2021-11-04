@@ -36,6 +36,11 @@ public class Empresa {
   public Empresa() {
   }
 
+  public Empresa(String empresaNome, CategoriaEmpresa categoriaEmpresa) {
+    this.empresaNome = empresaNome;
+    this.categoriaEmpresa = categoriaEmpresa;
+  }
+
   public Long getEmpresaId() {
     return empresaId;
   }

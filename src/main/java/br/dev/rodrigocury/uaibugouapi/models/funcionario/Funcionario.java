@@ -37,7 +37,7 @@ public class Funcionario implements UserDetails {
   private String senha;
 
   @Column(nullable = false)
-  private boolean ativo;
+  private boolean ativo = true;
 
   @Column(updatable = false)
   private LocalDateTime dataCricao = LocalDateTime.now();
@@ -47,6 +47,15 @@ public class Funcionario implements UserDetails {
   private Time time;
 
   public Funcionario() {
+  }
+
+  public Funcionario(Empresa empresa, Funcao funcao, String funcionarioNome, String funcionarioSobrenome, String funcionarioEmail, String senha) {
+    this.empresa = empresa;
+    this.funcao = funcao;
+    this.funcionarioNome = funcionarioNome;
+    this.funcionarioSobrenome = funcionarioSobrenome;
+    this.funcionarioEmail = funcionarioEmail;
+    this.senha = senha;
   }
 
   @Override

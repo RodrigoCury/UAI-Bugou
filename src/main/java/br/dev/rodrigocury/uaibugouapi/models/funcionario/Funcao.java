@@ -25,6 +25,12 @@ public class Funcao implements GrantedAuthority {
   public Funcao() {
   }
 
+  public Funcao(Empresa empresa, PrivilegiosDeAcesso privilegiosDeAcesso, String funcaoNome) {
+    this.empresa = empresa;
+    this.privilegiosDeAcesso = privilegiosDeAcesso;
+    this.funcaoNome = funcaoNome;
+  }
+
   public Long getFuncaoId() {
     return funcaoId;
   }
