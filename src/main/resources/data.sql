@@ -1,0 +1,2 @@
+INSERT INTO CATEGORIA_EMPRESA (CATEGORIA_NOME)  VALUES ( 'Tecnologia da Informação' ), ( 'Ciência de Dados' );
+INSERT INTO categoria_problema (CATEGORIA_NOME)  VALUES ( 'UI' ), ( 'Segurança' ), ('UX');
