@@ -3,6 +3,8 @@ package br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa;
 import br.dev.rodrigocury.uaibugouapi.models.categorias.CategoriaEmpresa;
 import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcao;
 import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcionario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,15 +24,19 @@ public class Empresa {
   private CategoriaEmpresa categoriaEmpresa;
 
   @OneToMany(mappedBy = "empresa")
+  @JsonIgnore
   private List<Funcionario> funcionarios;
 
+  @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
   private List<Projeto> projetos;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
+  @JsonIgnore
   private List<Time> times;
 
   @OneToMany(mappedBy = "empresa")
+  @JsonIgnore
   private List<Funcao> funcoes;
 
   public Empresa() {
@@ -65,6 +71,7 @@ public class Empresa {
     this.categoriaEmpresa = categoriaEmpresa;
   }
 
+  @Transactional
   public List<Projeto> getProjetos() {
     return projetos;
   }
@@ -73,6 +80,7 @@ public class Empresa {
     this.projetos = projetos;
   }
 
+  @Transactional
   public List<Time> getTimes() {
     return times;
   }
@@ -85,6 +93,7 @@ public class Empresa {
     this.funcionarios = funcionarios;
   }
 
+  @Transactional
   public List<Funcionario> getFuncionarios() {
     return funcionarios;
   }
@@ -93,8 +102,8 @@ public class Empresa {
     this.funcoes = funcoes;
   }
 
+  @Transactional
   public List<Funcao> getFuncoes() {
     return funcoes;
   }
-
 }

@@ -4,6 +4,7 @@ import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Empresa;
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Time;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -109,6 +110,7 @@ public class Funcionario implements UserDetails {
     this.funcionarioId = funcionarioId;
   }
 
+  @Transactional
   public Empresa getEmpresa() {
     return empresa;
   }
@@ -117,6 +119,7 @@ public class Funcionario implements UserDetails {
     this.empresa = empresa;
   }
 
+  @Transactional
   public Funcao getFuncao() {
     return funcao;
   }

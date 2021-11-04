@@ -2,6 +2,7 @@ package br.dev.rodrigocury.uaibugouapi.models.funcionario;
 
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Empresa;
 import br.dev.rodrigocury.uaibugouapi.models.enums.PrivilegiosDeAcesso;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -15,9 +16,11 @@ public class Funcao implements GrantedAuthority {
 
   @ManyToOne
   @JoinColumn(name = "empresa_id")
+  @JsonIgnore
   private Empresa empresa;
 
   @Enumerated(value = EnumType.STRING)
+  @JsonIgnore
   private PrivilegiosDeAcesso privilegiosDeAcesso;
 
   private String funcaoNome;
@@ -72,6 +75,7 @@ public class Funcao implements GrantedAuthority {
   }
 
   @Override
+  @JsonIgnore
   public String getAuthority() {
     return String.format("ROLE_%s" ,privilegiosDeAcesso.name());
   }

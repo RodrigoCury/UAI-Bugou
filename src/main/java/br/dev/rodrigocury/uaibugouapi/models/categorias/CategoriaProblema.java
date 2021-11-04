@@ -1,6 +1,7 @@
 package br.dev.rodrigocury.uaibugouapi.models.categorias;
 
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Problema;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -10,6 +11,7 @@ import java.util.List;
 public class CategoriaProblema extends CategoriasSuper {
 
   @OneToMany(mappedBy = "categoriaProblema")
+  @JsonIgnore
   private List<Problema> empresas;
 
   public CategoriaProblema() {
