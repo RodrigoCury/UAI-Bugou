@@ -1,12 +1,7 @@
 package br.dev.rodrigocury.uaibugouapi.dto;
 
-import br.dev.rodrigocury.uaibugouapi.forms.customvalidators.EmailValidator;
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Empresa;
 import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcionario;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 public class NovaEmpresaDto {
 
