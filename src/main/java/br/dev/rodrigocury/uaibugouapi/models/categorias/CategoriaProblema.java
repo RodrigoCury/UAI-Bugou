@@ -7,12 +7,12 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
-public class CategoriaProblemas extends CategoriasSuper {
+public class CategoriaProblema extends CategoriasSuper {
 
   @OneToMany(mappedBy = "categoriaProblemas")
   private List<Problema> empresas;
 
-  public CategoriaProblemas() {
+  public CategoriaProblema() {
   }
 
   public List<Problema> getEmpresas() {
