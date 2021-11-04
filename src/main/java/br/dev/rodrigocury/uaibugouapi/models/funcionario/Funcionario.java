@@ -40,7 +40,7 @@ public class Funcionario implements UserDetails {
   private boolean ativo = true;
 
   @Column(updatable = false)
-  private LocalDateTime dataCricao = LocalDateTime.now();
+  private LocalDateTime dataCriacao = LocalDateTime.now();
 
   @ManyToOne
   @JoinColumn(name = "time_id")
@@ -165,11 +165,11 @@ public class Funcionario implements UserDetails {
     this.ativo = ativo;
   }
 
-  public LocalDateTime getDataCricao() {
-    return dataCricao;
+  public LocalDateTime getDataCriacao() {
+    return dataCriacao;
   }
 
-  public void setDataCricao(LocalDateTime dataCricao) {
-    this.dataCricao = dataCricao;
+  public void setDataCriacao(LocalDateTime dataCricao) {
+    this.dataCriacao = dataCricao;
   }
 }
