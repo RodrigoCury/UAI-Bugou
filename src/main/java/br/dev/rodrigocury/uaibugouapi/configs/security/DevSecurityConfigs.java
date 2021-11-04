@@ -51,7 +51,7 @@ public class DevSecurityConfigs extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
-        .antMatchers(HttpMethod.POST,"/empresa").permitAll()
+        .antMatchers(HttpMethod.POST,"/empresa", "/auth").permitAll()
         .antMatchers("/h2-console/**").permitAll()
         .anyRequest().authenticated()
         .and().csrf().disable()
