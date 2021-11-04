@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class CategoriaProblema extends CategoriasSuper {
 
-  @OneToMany(mappedBy = "categoriaProblemas")
+  @OneToMany(mappedBy = "categoriaProblema")
   private List<Problema> empresas;
 
   public CategoriaProblema() {
