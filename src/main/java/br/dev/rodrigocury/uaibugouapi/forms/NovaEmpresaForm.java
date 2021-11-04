@@ -1,11 +1,11 @@
 package br.dev.rodrigocury.uaibugouapi.forms;
 
 import br.dev.rodrigocury.uaibugouapi.forms.customvalidators.EmailValidator;
+import br.dev.rodrigocury.uaibugouapi.forms.customvalidators.PasswordValidator;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 public class NovaEmpresaForm {
 
@@ -30,11 +30,7 @@ public class NovaEmpresaForm {
   @EmailValidator
   private String funcionarioEmail;
 
-  @Pattern(
-      regexp = "(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$",
-      message = "Por favor, retorne uma senha forte, maior que 8 digitos, pelo menos uma letra maiuscula, 1 minuscula, 1 numero e 1 caractere especial"
-  )
-  @NotNull
+  @PasswordValidator
   private String senha;
 
   public NovaEmpresaForm() {
