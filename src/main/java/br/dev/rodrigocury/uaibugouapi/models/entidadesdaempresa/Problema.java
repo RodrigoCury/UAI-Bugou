@@ -1,6 +1,6 @@
 package br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa;
 
-import br.dev.rodrigocury.uaibugouapi.models.categorias.CategoriaProblemas;
+import br.dev.rodrigocury.uaibugouapi.models.categorias.CategoriaProblema;
 import br.dev.rodrigocury.uaibugouapi.models.enums.Severidade;
 import br.dev.rodrigocury.uaibugouapi.models.enums.Status;
 import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcionario;
@@ -18,7 +18,7 @@ public class Problema {
 
   @ManyToOne
   @JoinColumn(name = "categoria_problemas_id")
-  private CategoriaProblemas categoriaProblemas;
+  private CategoriaProblema categoriaProblema;
 
   @Column(nullable = false)
   private String problemaNome;
@@ -58,12 +58,12 @@ public class Problema {
     this.id = id;
   }
 
-  public CategoriaProblemas getCategoriaProblemas() {
-    return categoriaProblemas;
+  public CategoriaProblema getCategoriaProblema() {
+    return categoriaProblema;
   }
 
-  public void setCategoriaProblemas(CategoriaProblemas categoriaProblemas) {
-    this.categoriaProblemas = categoriaProblemas;
+  public void setCategoriaProblema(CategoriaProblema categoriaProblemas) {
+    this.categoriaProblema = categoriaProblemas;
   }
 
   public String getProblemaNome() {
