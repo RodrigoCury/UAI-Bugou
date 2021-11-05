@@ -34,13 +34,6 @@ public class Funcao implements GrantedAuthority {
     this.funcaoNome = funcaoNome;
   }
 
-  public Long getFuncaoId() {
-    return funcaoId;
-  }
-
-  public void setFuncaoId(Long funcaoId) {
-    this.funcaoId = funcaoId;
-  }
 
   public PrivilegiosDeAcesso getPrivilegiosDeAcesso() {
     return privilegiosDeAcesso;
