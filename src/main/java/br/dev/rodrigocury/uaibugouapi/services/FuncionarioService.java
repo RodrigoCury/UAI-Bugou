@@ -1,6 +1,7 @@
 package br.dev.rodrigocury.uaibugouapi.services;
 
 import br.dev.rodrigocury.uaibugouapi.dto.FuncionarioDto;
+import br.dev.rodrigocury.uaibugouapi.forms.AlteraFuncionarioForm;
 import br.dev.rodrigocury.uaibugouapi.forms.NovaEmpresaForm;
 import br.dev.rodrigocury.uaibugouapi.forms.NovoFuncionarioForm;
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Empresa;
@@ -13,12 +14,18 @@ import br.dev.rodrigocury.uaibugouapi.utils.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.yaml.snakeyaml.util.EnumUtils;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Function;
 
 
 @Service
@@ -61,7 +68,6 @@ public class FuncionarioService {
   public Funcionario criaFuncionario(Funcionario logado, NovoFuncionarioForm form) {
     Optional<Funcao> funcaoById = funcaoRepository.findById(form.getFuncaoId());
 
-
     if (funcaoById.isEmpty()){
       throw new EntityNotFoundException("Funcao não encontrada no DB");
     }
@@ -84,36 +90,80 @@ public class FuncionarioService {
   }
 
   @Transactional
-  public Page<FuncionarioDto> encontraFuncionariosDaEmpresa(
-      Empresa empresa,
-      Pageable pageable) {
-    Page<Funcionario> funcionarios = funcionarioRepository.findByEmpresaId(empresa.getEmpresaId(), pageable);
+  public Page<FuncionarioDto> encontraFuncionariosDaEmpresa(Empresa empresa, Pageable pageable, Long funcaoId, PrivilegiosDeAcesso privilegio) {
+    Page<Funcionario> funcionarios = null;
+    if(funcaoId == null && privilegio == null){
+      funcionarios = funcionarioRepository.findByEmpresaId(empresa.getEmpresaId(), pageable);
+    } else if (funcaoId != null){
+      funcionarios = funcionarioRepository.findByEmpresaAndFuncaoId(empresa.getEmpresaId(), funcaoId, pageable);
+    } else {
+      funcionarios = funcionarioRepository.findByEmpresaAndPrivilegios(empresa.getEmpresaId(), privilegio, pageable);
+    }
+
     return funcionarios.map(FuncionarioDto::toFuncionarioDto);
   }
 
   @Transactional
-  public Funcionario encontraFuncionarioPorId(Funcionario autenticado, Long id){
-    Long empresaId = autenticado.getEmpresa().getEmpresaId();
-
+  public Funcionario encontraFuncionarioPorId(Empresa empresa, Long id){
     Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
 
-    if (funcionario.isEmpty()){
-      throw new EntityNotFoundException("Funcionario não Encontrado");
-    }
-
-    if(!funcionario.get().getEmpresa().getEmpresaId().equals(empresaId)){
-      throw new AccessDeniedException("Você não tem accesso a esse funcionario");
-    }
+    checkFuncionario(funcionario, empresa);
 
     return funcionario.get();
   }
 
   @Transactional
-  public Funcionario alternarAtivo(Funcionario autenticado, Long id) {
-    Funcionario funcionario = this.encontraFuncionarioPorId(autenticado, id);
+  public Funcionario alternarAtivo(Empresa empresa, Long id) {
+    Funcionario funcionario = this.encontraFuncionarioPorId(empresa, id);
 
     funcionario.setAtivo(!funcionario.isAtivo());
 
     return funcionario;
   }
+
+  public void apagaFuncionario(Long id, Empresa empresa) {
+    Funcionario funcionario = this.encontraFuncionarioPorId(empresa, id);
+
+    funcionarioRepository.delete(funcionario);
+  }
+
+  @Transactional
+  public Funcionario alterarDadosFuncionario(Long id, AlteraFuncionarioForm form, Funcionario autenticado) {
+    Funcionario funcionario = this.encontraFuncionarioPorId(autenticado.getEmpresa(), id);
+
+    if (
+        !autenticado.getFuncao().getAuthority().equals("ROLE_ADMINISTRADOR") &&
+        !autenticado.getFuncionarioId().equals(id)
+    ){
+      throw new AccessDeniedException("Apenas Administradores e o próprio funcionário podem altera-lo");
+    }
+
+    funcionario.setFuncionarioNome(form.getFuncionarioNome());
+    funcionario.setFuncionarioSobrenome(form.getFuncionarioSobrenome());
+    funcionario.setFuncionarioEmail(form.getFuncionarioEmail());
+
+    if (!funcionario.getFuncao().getId().equals(form.getFuncaoId())){
+      Optional<Funcao> funcaoById = funcaoRepository.findById(form.getFuncaoId());
+
+      if (funcaoById.isEmpty()){
+        throw new EntityNotFoundException("Funcao não encontrada no DB");
+      }
+
+      funcionario.setFuncao(funcaoById.get());
+    }
+
+    return funcionario;
+  }
+
+
+  private void checkFuncionario(Optional<Funcionario> funcionario, Empresa empresa){
+    if (funcionario.isEmpty()){
+      throw new EntityNotFoundException("Funcionario não Encontrado");
+    }
+
+    if(!funcionario.get().getEmpresa().getEmpresaId().equals(empresa.getEmpresaId())){
+      throw new AccessDeniedException("Você não tem accesso a esse funcionario");
+    }
+  }
+
 }
