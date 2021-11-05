@@ -3,11 +3,12 @@ package br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa;
 import br.dev.rodrigocury.uaibugouapi.models.categorias.CategoriaEmpresa;
 import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcao;
 import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcionario;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Empresa {
@@ -21,23 +22,24 @@ public class Empresa {
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(nullable = false, name = "categoria_empresa_id")
+  @JsonManagedReference
   private CategoriaEmpresa categoriaEmpresa;
 
   @OneToMany(mappedBy = "empresa")
-  @JsonIgnore
-  private List<Funcionario> funcionarios;
+  @JsonBackReference
+  private Set<Funcionario> funcionarios;
 
-  @JsonIgnore
+  @JsonBackReference
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
-  private List<Projeto> projetos;
+  private Set<Projeto> projetos;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
-  @JsonIgnore
-  private List<Time> times;
+  @JsonBackReference
+  private Set<Time> times;
 
   @OneToMany(mappedBy = "empresa")
-  @JsonIgnore
-  private List<Funcao> funcoes;
+  @JsonBackReference
+  private Set<Funcao> funcoes;
 
   public Empresa() {
   }
@@ -72,38 +74,38 @@ public class Empresa {
   }
 
   @Transactional
-  public List<Projeto> getProjetos() {
+  public Set<Projeto> getProjetos() {
     return projetos;
   }
 
-  public void setProjetos(List<Projeto> projetos) {
+  public void setProjetos(Set<Projeto> projetos) {
     this.projetos = projetos;
   }
 
   @Transactional
-  public List<Time> getTimes() {
+  public Set<Time> getTimes() {
     return times;
   }
 
-  public void setTimes(List<Time> times) {
+  public void setTimes(Set<Time> times) {
     this.times = times;
   }
 
-  public void setFuncionarios(List<Funcionario> funcionarios) {
+  public void setFuncionarios(Set<Funcionario> funcionarios) {
     this.funcionarios = funcionarios;
   }
 
   @Transactional
-  public List<Funcionario> getFuncionarios() {
+  public Set<Funcionario> getFuncionarios() {
     return funcionarios;
   }
 
-  public void setFuncoes(List<Funcao> funcoes) {
+  public void setFuncoes(Set<Funcao> funcoes) {
     this.funcoes = funcoes;
   }
 
   @Transactional
-  public List<Funcao> getFuncoes() {
+  public Set<Funcao> getFuncoes() {
     return funcoes;
   }
 }

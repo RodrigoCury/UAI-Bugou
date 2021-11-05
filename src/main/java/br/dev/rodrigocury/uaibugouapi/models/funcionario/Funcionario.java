@@ -2,6 +2,7 @@ package br.dev.rodrigocury.uaibugouapi.models.funcionario;
 
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Empresa;
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Time;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ public class Funcionario implements UserDetails {
 
   @ManyToOne
   @JoinColumn(name = "empresa_id")
+  @JsonManagedReference
   private Empresa empresa;
 
   @ManyToOne(fetch = FetchType.EAGER)

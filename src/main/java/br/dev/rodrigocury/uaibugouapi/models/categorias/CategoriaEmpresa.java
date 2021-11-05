@@ -1,6 +1,7 @@
 package br.dev.rodrigocury.uaibugouapi.models.categorias;
 
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Empresa;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import java.util.List;
 public class CategoriaEmpresa extends CategoriasSuper {
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoriaEmpresa")
+  @JsonBackReference
   @JsonIgnore
   private List<Empresa> empresas;
 

@@ -1,6 +1,7 @@
 package br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa;
 
 import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcionario;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Projeto {
 
   @ManyToOne
   @JoinColumn(name = "empresa_id")
+  @JsonManagedReference
   private Empresa empresa;
 
   public Projeto() {
