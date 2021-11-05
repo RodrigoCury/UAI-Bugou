@@ -6,7 +6,6 @@ import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcionario;
 
 import java.time.LocalDateTime;
 
-@SuppressWarnings("ClassCanBeRecord")
 public class FuncionarioDto {
   private final Long funcionarioId;
   private final String funcionarioNome;
@@ -14,7 +13,7 @@ public class FuncionarioDto {
   private final String funcionarioEmail;
   private final LocalDateTime adicionadoEm;
   private final boolean ativo;
-  private final Funcao funcao;
+  private final FuncaoDto funcao;
   private final Time time;
 
   public FuncionarioDto(Long funcionarioId, String funcionarioNome, String funcionarioSobrenome, String funcionarioEmail, LocalDateTime adicionadoEm, boolean ativo, Funcao funcao, Time time) {
@@ -24,7 +23,7 @@ public class FuncionarioDto {
     this.funcionarioEmail = funcionarioEmail;
     this.adicionadoEm = adicionadoEm;
     this.ativo = ativo;
-    this.funcao = funcao;
+    this.funcao = new FuncaoDto(funcao);
     this.time = time;
   }
 
@@ -52,7 +51,7 @@ public class FuncionarioDto {
     return ativo;
   }
 
-  public Funcao getFuncao() {
+  public FuncaoDto getFuncao() {
     return funcao;
   }
 
