@@ -32,6 +32,7 @@ public class DevSecurityConfigs extends WebSecurityConfigurerAdapter {
     this.funcionarioRepository = funcionarioRepository;
   }
 
+  @SuppressWarnings("EmptyMethod")
   @Bean
   @Override
   protected AuthenticationManager authenticationManager() throws Exception {
@@ -58,6 +59,6 @@ public class DevSecurityConfigs extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and().addFilterBefore(new AutenticacaoTokenFilter(tokenService, funcionarioRepository), UsernamePasswordAuthenticationFilter.class);
 
-    http.headers().frameOptions().disable();;
+    http.headers().frameOptions().disable();
   }
 }

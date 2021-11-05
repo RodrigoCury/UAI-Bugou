@@ -6,6 +6,7 @@ import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcionario;
 
 import java.time.LocalDateTime;
 
+@SuppressWarnings("ClassCanBeRecord")
 public class FuncionarioDto {
   private final Long funcionarioId;
   private final String funcionarioNome;

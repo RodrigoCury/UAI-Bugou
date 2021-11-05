@@ -14,18 +14,12 @@ import br.dev.rodrigocury.uaibugouapi.utils.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.yaml.snakeyaml.util.EnumUtils;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.function.Function;
 
 
 @Service
@@ -91,13 +85,13 @@ public class FuncionarioService {
 
   @Transactional
   public Page<FuncionarioDto> encontraFuncionariosDaEmpresa(Empresa empresa, Pageable pageable, Long funcaoId, PrivilegiosDeAcesso privilegio) {
-    Page<Funcionario> funcionarios = null;
-    if(funcaoId == null && privilegio == null){
-      funcionarios = funcionarioRepository.findByEmpresaId(empresa.getEmpresaId(), pageable);
-    } else if (funcaoId != null){
+    Page<Funcionario> funcionarios;
+    if(funcaoId != null){
       funcionarios = funcionarioRepository.findByEmpresaAndFuncaoId(empresa.getEmpresaId(), funcaoId, pageable);
-    } else {
+    } else if (privilegio != null){
       funcionarios = funcionarioRepository.findByEmpresaAndPrivilegios(empresa.getEmpresaId(), privilegio, pageable);
+    } else {
+      funcionarios = funcionarioRepository.findByEmpresaId(empresa.getEmpresaId(), pageable);
     }
 
     return funcionarios.map(FuncionarioDto::toFuncionarioDto);
@@ -107,9 +101,7 @@ public class FuncionarioService {
   public Funcionario encontraFuncionarioPorId(Empresa empresa, Long id){
     Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
 
-    checkFuncionario(funcionario, empresa);
-
-    return funcionario.get();
+    return checkFuncionario(funcionario, empresa);
   }
 
   @Transactional
@@ -156,7 +148,7 @@ public class FuncionarioService {
   }
 
 
-  private void checkFuncionario(Optional<Funcionario> funcionario, Empresa empresa){
+  private Funcionario checkFuncionario(Optional<Funcionario> funcionario, Empresa empresa){
     if (funcionario.isEmpty()){
       throw new EntityNotFoundException("Funcionario não Encontrado");
     }
@@ -164,6 +156,7 @@ public class FuncionarioService {
     if(!funcionario.get().getEmpresa().getEmpresaId().equals(empresa.getEmpresaId())){
       throw new AccessDeniedException("Você não tem accesso a esse funcionario");
     }
+    return funcionario.get();
   }
 
 }

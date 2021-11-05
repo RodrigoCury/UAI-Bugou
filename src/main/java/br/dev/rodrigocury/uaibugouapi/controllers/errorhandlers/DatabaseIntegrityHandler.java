@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @ControllerAdvice
 public class DatabaseIntegrityHandler extends ResponseEntityExceptionHandler {
@@ -19,7 +20,7 @@ public class DatabaseIntegrityHandler extends ResponseEntityExceptionHandler {
 
     List<FormErrorDto> listaErros = new ArrayList<>();
 
-    if (ex.getMessage().contains("FUNCIONARIO(FUNCIONARIO_EMAIL)")){
+    if (Objects.requireNonNull(ex.getMessage()).contains("FUNCIONARIO(FUNCIONARIO_EMAIL)")){
       listaErros.add(new FormErrorDto("funcionarioEmail", "Email ja está cadastrado"));
     }
     return ResponseEntity.badRequest().body(listaErros);

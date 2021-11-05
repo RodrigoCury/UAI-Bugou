@@ -1,7 +1,6 @@
 package br.dev.rodrigocury.uaibugouapi.forms;
 
 import br.dev.rodrigocury.uaibugouapi.forms.customvalidators.EmailValidator;
-import br.dev.rodrigocury.uaibugouapi.forms.customvalidators.PasswordValidator;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;

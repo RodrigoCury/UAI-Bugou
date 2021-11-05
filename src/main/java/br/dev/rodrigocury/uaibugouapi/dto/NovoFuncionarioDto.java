@@ -1,5 +1,6 @@
 package br.dev.rodrigocury.uaibugouapi.dto;
 
+@SuppressWarnings("ALL")
 public class NovoFuncionarioDto {
   private final Long funcionarioId;
   private final String funcionarioNome;

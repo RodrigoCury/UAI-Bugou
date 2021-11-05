@@ -13,5 +13,5 @@ public class EntityNotFoundHandler {
   @ExceptionHandler({EntityNotFoundException.class})
   public ResponseEntity<String> funcionarioNaoEncontrado(EntityNotFoundException ex, WebRequest request){
     return ResponseEntity.notFound().build();
-  };
+  }
 }

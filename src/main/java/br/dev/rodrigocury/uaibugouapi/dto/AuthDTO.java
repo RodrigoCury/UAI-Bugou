@@ -1,8 +1,9 @@
 package br.dev.rodrigocury.uaibugouapi.dto;
 
+@SuppressWarnings("ALL")
 public class AuthDTO {
-  private String token;
-  private String tipo;
+  private final String token;
+  private final String tipo;
 
   public String getToken() {
     return token;

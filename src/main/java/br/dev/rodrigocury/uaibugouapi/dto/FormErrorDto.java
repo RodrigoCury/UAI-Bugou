@@ -1,8 +1,9 @@
 package br.dev.rodrigocury.uaibugouapi.dto;
 
+@SuppressWarnings("ALL")
 public class FormErrorDto {
-  private String campo;
-  private String message;
+  private final String campo;
+  private final String message;
 
   public FormErrorDto(String campo, String message) {
     this.campo = campo;

@@ -5,5 +5,5 @@ public enum Severidade {
   BAIXA,
   MEDIA,
   ALTA,
-  ALTISSIMA;
+  ALTISSIMA
 }
