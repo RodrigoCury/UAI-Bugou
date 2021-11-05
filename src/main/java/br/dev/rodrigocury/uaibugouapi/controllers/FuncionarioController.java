@@ -8,17 +8,18 @@ import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcionario;
 import br.dev.rodrigocury.uaibugouapi.services.FuncionarioService;
 import br.dev.rodrigocury.uaibugouapi.utils.AuthenticationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("funcionario")
@@ -52,16 +53,17 @@ public class FuncionarioController {
 
   @GetMapping
   @Transactional
-  public ResponseEntity<List<FuncionarioDto>> listaFuncionarioDaEmpresa(Authentication auth){
+  public ResponseEntity<Page<FuncionarioDto>> listaFuncionarioDaEmpresa(
+      Authentication auth,
+      @PageableDefault(sort = "dataCriacao", direction = Sort.Direction.DESC, page=0, size=10) Pageable pageable
+  ){
     Funcionario autenticado = AuthenticationHelper.getAutenticado(auth);
     Empresa empresa = autenticado.getEmpresa();
 
-    List<Funcionario> funcionarios = funcionarioService.encontraFuncionariosDaEmpresa(empresa);
-    List<FuncionarioDto> funcionarioDtos = funcionarios.stream()
-        .map(FuncionarioDto::toFuncionarioDto)
-        .toList();
+    Page<FuncionarioDto> funcionarios = funcionarioService.encontraFuncionariosDaEmpresa(empresa, pageable);
 
-    return ResponseEntity.ok(funcionarioDtos);
+
+    return ResponseEntity.ok(funcionarios);
   }
 
   @Transactional

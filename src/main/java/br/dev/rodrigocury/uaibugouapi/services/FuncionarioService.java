@@ -11,13 +11,13 @@ import br.dev.rodrigocury.uaibugouapi.repositories.FuncaoRepository;
 import br.dev.rodrigocury.uaibugouapi.repositories.FuncionarioRepository;
 import br.dev.rodrigocury.uaibugouapi.utils.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -84,9 +84,11 @@ public class FuncionarioService {
   }
 
   @Transactional
-  public List<Funcionario> encontraFuncionariosDaEmpresa(Empresa empresa) {
-    List<Funcionario> funcionarios = funcionarioRepository.findByEmpresaId(empresa.getEmpresaId());
-    return funcionarios;
+  public Page<FuncionarioDto> encontraFuncionariosDaEmpresa(
+      Empresa empresa,
+      Pageable pageable) {
+    Page<Funcionario> funcionarios = funcionarioRepository.findByEmpresaId(empresa.getEmpresaId(), pageable);
+    return funcionarios.map(FuncionarioDto::toFuncionarioDto);
   }
 
   @Transactional
@@ -98,8 +100,6 @@ public class FuncionarioService {
     if (funcionario.isEmpty()){
       throw new EntityNotFoundException("Funcionario não Encontrado");
     }
-
-    System.out.println(empresaId + "|" + funcionario.get().getEmpresa().getEmpresaId());
 
     if(!funcionario.get().getEmpresa().getEmpresaId().equals(empresaId)){
       throw new AccessDeniedException("Você não tem accesso a esse funcionario");
