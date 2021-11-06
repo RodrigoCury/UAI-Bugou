@@ -3,7 +3,7 @@ package br.dev.rodrigocury.uaibugouapi.dto;
 import br.dev.rodrigocury.uaibugouapi.models.enums.PrivilegiosDeAcesso;
 import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcao;
 
-class FuncaoDto {
+public class FuncaoDto {
   private final String funcaoNome;
   private final Long id;
   private final PrivilegiosDeAcesso privilegiosDeAcesso;
