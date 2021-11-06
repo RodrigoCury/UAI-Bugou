@@ -1,11 +1,13 @@
 package br.dev.rodrigocury.uaibugouapi.configs.security;
 
 import br.dev.rodrigocury.uaibugouapi.repositories.FuncionarioRepository;
+import static br.dev.rodrigocury.uaibugouapi.configs.security.RouteAccessConfigs.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.access.expression.SecurityExpressionHandler;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -32,7 +36,6 @@ public class DevSecurityConfigs extends WebSecurityConfigurerAdapter {
     this.funcionarioRepository = funcionarioRepository;
   }
 
-  @SuppressWarnings("EmptyMethod")
   @Bean
   @Override
   protected AuthenticationManager authenticationManager() throws Exception {
@@ -51,14 +54,38 @@ public class DevSecurityConfigs extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    configuraHierarquiaDeAcesso(http);
+    configuraAcessoRotasFuncionarios(http);
+    configuraAcessoRotasEmpresa(http);
+    configuraAcessoRotasFuncao(http);
+    configuraAcessoAsRotasH2(http);
+    configuraAcessoAsRotasAbertas(http);
+    configuraAutenticacao(http);
+  }
+
+  private void configuraHierarquiaDeAcesso(HttpSecurity http) throws Exception {
     http.authorizeRequests()
-        .antMatchers(HttpMethod.POST,"/empresa", "/auth").permitAll()
-        .antMatchers("/h2-console/**").permitAll()
-        .anyRequest().authenticated()
-        .and().csrf().disable()
+        .expressionHandler(webExpressionHandler());
+  }
+
+  private void configuraAutenticacao(HttpSecurity http) throws Exception {
+    http.csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and().addFilterBefore(new AutenticacaoTokenFilter(tokenService, funcionarioRepository), UsernamePasswordAuthenticationFilter.class);
 
     http.headers().frameOptions().disable();
+  }
+
+  @Bean
+  public RoleHierarchyImpl roleHierarchy() {
+    RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+    roleHierarchy.setHierarchy("ROLE_ADMINISTRADOR > ROLE_GERENTE ROLE_GERENTE > ROLE_FUNCIONARIO");
+    return roleHierarchy;
+  }
+
+  private SecurityExpressionHandler<FilterInvocation> webExpressionHandler() {
+    DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
+    defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
+    return defaultWebSecurityExpressionHandler;
   }
 }
