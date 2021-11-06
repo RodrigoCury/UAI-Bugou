@@ -10,11 +10,13 @@ import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcionario;
 import br.dev.rodrigocury.uaibugouapi.services.FuncionarioService;
 import br.dev.rodrigocury.uaibugouapi.utils.AuthenticationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -72,7 +74,13 @@ public class FuncionarioController {
   @Transactional
   @GetMapping("/{id}")
   public ResponseEntity<FuncionarioDto> encontraFuncionarioDaEmpresa(Authentication auth, @PathVariable("id") Long id){
-    Empresa empresa = AuthenticationHelper.getEmpresaDoAutenticado(auth);
+    Funcionario logado = AuthenticationHelper.getAutenticado(auth);
+
+    if (!logado.getFuncionarioId().equals(id) && !logado.getFuncao().getPrivilegiosDeAcesso().equals(PrivilegiosDeAcesso.ADMINISTRADOR)){
+      throw new AccessDeniedException("Você não tem permissao para acessar esses dados");
+    }
+
+    Empresa empresa = logado.getEmpresa();
 
     Funcionario funcionario = funcionarioService.encontraFuncionarioPorId(empresa, id);
 
@@ -92,9 +100,13 @@ public class FuncionarioController {
   @PutMapping("/{id}")
   @Transactional
   public ResponseEntity<FuncionarioDto> alterarDadosDoFuncionario(@PathVariable("id") Long id, @RequestBody @Valid AlteraFuncionarioForm form, Authentication auth){
-    Funcionario autenticado = AuthenticationHelper.getAutenticado(auth);
+    Funcionario logado = AuthenticationHelper.getAutenticado(auth);
 
-    Funcionario funcionario = funcionarioService.alterarDadosFuncionario(id, form, autenticado);
+    if (!logado.getFuncionarioId().equals(id) && !logado.getFuncao().getPrivilegiosDeAcesso().equals(PrivilegiosDeAcesso.ADMINISTRADOR)){
+      throw new AccessDeniedException("Você não tem permissao para acessar esses dados");
+    }
+
+    Funcionario funcionario = funcionarioService.alterarDadosFuncionario(id, form, logado);
 
     return ResponseEntity.ok(FuncionarioDto.toFuncionarioDto(funcionario));
   }
