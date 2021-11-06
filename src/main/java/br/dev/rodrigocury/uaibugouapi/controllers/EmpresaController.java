@@ -34,16 +34,11 @@ public class EmpresaController {
     return ResponseEntity.ok(novaEmpresaDto);
   }
 
-  @GetMapping("/{id}")
+  @GetMapping
   @Transactional
-  public ResponseEntity<EmpresaDto> getEmpresaData(@PathVariable("id") Long id, Authentication authentication){
+  public ResponseEntity<EmpresaDto> getEmpresaData(Authentication authentication){
     Empresa empresaDoLogin = AuthenticationHelper.getEmpresaDoAutenticado(authentication);
-
-    if(!empresaDoLogin.getEmpresaId().equals(id)){
-      throw new AccessDeniedException("Você não tem permissão para acessar esses dados");
-    }
-
-    Empresa empresa = empresaService.getEmpresa(id);
+    Empresa empresa = empresaService.getEmpresa(empresaDoLogin.getEmpresaId());
 
     return ResponseEntity.ok(new EmpresaDto(empresa));
   }
