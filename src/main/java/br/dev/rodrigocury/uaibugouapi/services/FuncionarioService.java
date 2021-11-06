@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -159,4 +160,11 @@ public class FuncionarioService {
     return funcionario.get();
   }
 
+  public Set<Funcionario> findAllByFuncao_FuncaoId(Long id) {
+    return funcionarioRepository.findAllByFuncao_FuncaoId(id);
+  }
+
+  public void apagaSetDeFuncionario(Set<Funcionario> funcionarios) {
+    funcionarioRepository.deleteAll(funcionarios);
+  }
 }

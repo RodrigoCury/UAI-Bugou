@@ -9,6 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface FuncionarioRepository extends PagingAndSortingRepository<Funcionario, Long> {
 
@@ -36,4 +37,6 @@ public interface FuncionarioRepository extends PagingAndSortingRepository<Funcio
       "where e.empresaId = :empresaId " +
       "and f.funcao.privilegiosDeAcesso = :privilegios")
   Page<Funcionario> findByEmpresaAndPrivilegios(@Param("empresaId") Long empresaId, @Param("privilegios") PrivilegiosDeAcesso p, Pageable pageable);
+
+  Set<Funcionario> findAllByFuncao_FuncaoId(Long id);
 }
