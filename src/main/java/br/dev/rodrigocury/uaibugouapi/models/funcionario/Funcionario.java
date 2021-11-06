@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "funcionario")
 @Entity
@@ -63,7 +65,9 @@ public class Funcionario implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    Set<Funcao> authorities = new HashSet<>();
+    authorities.add(this.funcao);
+    return authorities;
   }
 
   @Override
