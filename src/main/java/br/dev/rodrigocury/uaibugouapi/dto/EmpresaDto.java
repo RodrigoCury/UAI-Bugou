@@ -13,7 +13,7 @@ public class EmpresaDto {
 
   private final String empresaNome;
 
-  private final CategoriaEmpresa categoriaEmpresa;
+  private final CategoriaEmpresaDTO categoriaEmpresa;
 
   private final Set<FuncionarioDto> funcionarios;
 
@@ -26,7 +26,7 @@ public class EmpresaDto {
   public EmpresaDto(Empresa empresa){
     this.empresaId = empresa.getEmpresaId();
     this.empresaNome = empresa.getEmpresaNome();
-    this.categoriaEmpresa = empresa.getCategoriaEmpresa();
+    this.categoriaEmpresa = new CategoriaEmpresaDTO(empresa.getCategoriaEmpresa());
     this.funcionarios = new HashSet<>();
     this.projetos = empresa.getProjetos();
     this.times = empresa.getTimes();
@@ -44,7 +44,7 @@ public class EmpresaDto {
     return empresaNome;
   }
 
-  public CategoriaEmpresa getCategoriaEmpresa() {
+  public CategoriaEmpresaDTO getCategoriaEmpresa() {
     return categoriaEmpresa;
   }
 
