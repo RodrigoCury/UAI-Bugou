@@ -3,6 +3,8 @@ package br.dev.rodrigocury.uaibugouapi.dto;
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Empresa;
 import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcionario;
 
+import java.time.LocalDateTime;
+
 public class NovaEmpresaDto {
 
   private final Long empresaId;
@@ -12,6 +14,7 @@ public class NovaEmpresaDto {
   private final String funcionarioNome;
   private final String funcionarioSobrenome;
   private final String funcionarioEmail;
+  private final LocalDateTime dataCriacaoFuncionario;
 
   public NovaEmpresaDto(Empresa empresa, Funcionario funcionario) {
     this.empresaId = empresa.getEmpresaId();
@@ -21,6 +24,7 @@ public class NovaEmpresaDto {
     this.funcionarioNome = funcionario.getFuncionarioNome();
     this.funcionarioSobrenome = funcionario.getFuncionarioSobrenome();
     this.funcionarioEmail = funcionario.getFuncionarioEmail();
+    this.dataCriacaoFuncionario = funcionario.getDataCriacao();
   }
 
   public Long getEmpresaId() {
@@ -45,5 +49,9 @@ public class NovaEmpresaDto {
 
   public String getFuncionarioEmail() {
     return funcionarioEmail;
+  }
+
+  public LocalDateTime getDataCriacaoFuncionario() {
+    return dataCriacaoFuncionario;
   }
 }
