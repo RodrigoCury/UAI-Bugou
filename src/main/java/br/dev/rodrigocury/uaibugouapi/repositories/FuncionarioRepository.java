@@ -39,4 +39,9 @@ public interface FuncionarioRepository extends PagingAndSortingRepository<Funcio
   Page<Funcionario> findByEmpresaAndPrivilegios(@Param("empresaId") Long empresaId, @Param("privilegios") PrivilegiosDeAcesso p, Pageable pageable);
 
   Set<Funcionario> findAllByFuncao_FuncaoId(Long id);
+
+  @Query("SELECT f FROM Funcionario f " +
+      "LEFT JOIN FETCH f.time " +
+      "WHERE f.funcionarioId IN :ids")
+  Set<Funcionario> findWithListOfIds(@Param("ids") Set<Long> ids);
 }
