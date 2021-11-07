@@ -4,7 +4,6 @@ import br.dev.rodrigocury.uaibugouapi.models.funcionario.Funcionario;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,11 +13,11 @@ public class Time {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long timeId;
 
-  @Column(nullable = false)
+  @Column(nullable = false, name = "time_nome")
   private String timeNome;
 
   @OneToMany(mappedBy = "time")
-  private List<Funcionario> funcionarios;
+  private Set<Funcionario> funcionarios;
 
   @ManyToMany
   @JoinTable(
@@ -33,6 +32,11 @@ public class Time {
   private Empresa empresa;
 
   public Time() {
+  }
+
+  public Time(String timeNome, Empresa empresa) {
+    this.timeNome = timeNome;
+    this.empresa = empresa;
   }
 
   public Long getTimeId() {
@@ -51,11 +55,11 @@ public class Time {
     this.timeNome = timeNome;
   }
 
-  public List<Funcionario> getFuncionarios() {
+  public Set<Funcionario> getFuncionarios() {
     return funcionarios;
   }
 
-  public void setFuncionarios(List<Funcionario> funcionarios) {
+  public void setFuncionarios(Set<Funcionario> funcionarios) {
     this.funcionarios = funcionarios;
   }
 
