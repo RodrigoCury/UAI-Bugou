@@ -14,9 +14,9 @@ public class FuncionarioDto {
   private final LocalDateTime adicionadoEm;
   private final boolean ativo;
   private final FuncaoDto funcao;
-  private final Time time;
+  private final Long timeId;
 
-  public FuncionarioDto(Long funcionarioId, String funcionarioNome, String funcionarioSobrenome, String funcionarioEmail, LocalDateTime adicionadoEm, boolean ativo, Funcao funcao, Time time) {
+  public FuncionarioDto(Long funcionarioId, String funcionarioNome, String funcionarioSobrenome, String funcionarioEmail, LocalDateTime adicionadoEm, boolean ativo, Funcao funcao, Long timeId) {
     this.funcionarioId = funcionarioId;
     this.funcionarioNome = funcionarioNome;
     this.funcionarioSobrenome = funcionarioSobrenome;
@@ -24,7 +24,7 @@ public class FuncionarioDto {
     this.adicionadoEm = adicionadoEm;
     this.ativo = ativo;
     this.funcao = new FuncaoDto(funcao);
-    this.time = time;
+    this.timeId = timeId;
   }
 
   public Long getFuncionarioId() {
@@ -55,8 +55,8 @@ public class FuncionarioDto {
     return funcao;
   }
 
-  public Time getTime() {
-    return time;
+  public Long getTimeId() {
+    return timeId;
   }
 
   public static FuncionarioDto toFuncionarioDto(Funcionario f){
@@ -68,7 +68,7 @@ public class FuncionarioDto {
         f.getDataCriacao(),
         f.isAtivo(),
         f.getFuncao(),
-        f.getTime()
+        f.getTime().getTimeId()
     );
   }
 }
