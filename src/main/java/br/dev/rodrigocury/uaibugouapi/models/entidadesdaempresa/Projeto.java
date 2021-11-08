@@ -34,6 +34,12 @@ public class Projeto {
   public Projeto() {
   }
 
+  public Projeto(Empresa empresa, Funcionario funcionarioResponsavel, String projetoNome) {
+    this.empresa = empresa;
+    this.funcionarioResponsavel = funcionarioResponsavel;
+    this.projetoNome = projetoNome;
+  }
+
   public Long getProjetoId() {
     return projetoId;
   }
