@@ -19,7 +19,7 @@ public class Time {
   @OneToMany(mappedBy = "time")
   private Set<Funcionario> funcionarios;
 
-  @ManyToMany
+  @ManyToMany(cascade = {CascadeType.MERGE})
   @JoinTable(
       name = "time_projeto",
       joinColumns = @JoinColumn(name = "time_id"),
@@ -77,5 +77,9 @@ public class Time {
 
   public void setEmpresa(Empresa empresa) {
     this.empresa = empresa;
+  }
+
+  public void addProjeto(Projeto projeto){
+    this.projetos.add(projeto);
   }
 }
