@@ -1,13 +1,13 @@
 package br.dev.rodrigocury.uaibugouapi.dto;
 
-import br.dev.rodrigocury.uaibugouapi.models.categorias.CategoriaEmpresa;
+import br.dev.rodrigocury.uaibugouapi.models.categorias.CategoriasSuper;
 
-public class CategoriaEmpresaDTO {
+public class CategoriaDTO {
   private final Long id;
 
   private final String categoriaNome;
 
-  public CategoriaEmpresaDTO(CategoriaEmpresa categoriaEmpresa) {
+  public CategoriaDTO(CategoriasSuper categoriaEmpresa) {
     this.id = categoriaEmpresa.getId();
     this.categoriaNome = categoriaEmpresa.getCategoriaNome();
   }
