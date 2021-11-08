@@ -8,6 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface TimeRepository extends PagingAndSortingRepository<Time, Long> {
   @Query("SELECT T FROM Time T " +
@@ -21,4 +22,9 @@ public interface TimeRepository extends PagingAndSortingRepository<Time, Long> {
   Optional<Time> findById(@Param("id") Long id);
 
   Optional<Time> findByTimeIdAndEmpresa_EmpresaId(Long timeId, Long empresaId);
+
+  @Query("SELECT T from Time T " +
+      "INNER JOIN T.empresa E " +
+      "WHERE E.empresaId = :empresaId AND T.timeId IN :timesIds")
+  Set<Time> findAllByEmpresa_EmpresaIdAndListOfIds(@Param("empresaId") Long empresaId, @Param("timesIds") Set<Long> timesIds);
 }
