@@ -8,12 +8,12 @@ public class EmpresaAlteradaDto {
 
   private final String empresaNome;
 
-  private final CategoriaEmpresaDTO categoriaEmpresa;
+  private final CategoriaDTO categoriaEmpresa;
 
   public EmpresaAlteradaDto(Empresa empresa) {
     this.empresaId = empresa.getEmpresaId();
     this.empresaNome = empresa.getEmpresaNome();
-    this.categoriaEmpresa = new CategoriaEmpresaDTO(empresa.getCategoriaEmpresa());
+    this.categoriaEmpresa = new CategoriaDTO(empresa.getCategoriaEmpresa());
   }
 
   public Long getEmpresaId() {
@@ -24,7 +24,7 @@ public class EmpresaAlteradaDto {
     return empresaNome;
   }
 
-  public CategoriaEmpresaDTO getCategoriaEmpresa() {
+  public CategoriaDTO getCategoriaEmpresa() {
     return categoriaEmpresa;
   }
 }

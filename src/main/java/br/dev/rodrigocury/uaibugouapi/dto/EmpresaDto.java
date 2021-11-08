@@ -1,6 +1,5 @@
 package br.dev.rodrigocury.uaibugouapi.dto;
 
-import br.dev.rodrigocury.uaibugouapi.models.categorias.CategoriaEmpresa;
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Empresa;
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Projeto;
 import br.dev.rodrigocury.uaibugouapi.models.entidadesdaempresa.Time;
@@ -13,7 +12,7 @@ public class EmpresaDto {
 
   private final String empresaNome;
 
-  private final CategoriaEmpresaDTO categoriaEmpresa;
+  private final CategoriaDTO categoriaEmpresa;
 
   private final Set<FuncionarioDto> funcionarios;
 
@@ -26,7 +25,7 @@ public class EmpresaDto {
   public EmpresaDto(Empresa empresa){
     this.empresaId = empresa.getEmpresaId();
     this.empresaNome = empresa.getEmpresaNome();
-    this.categoriaEmpresa = new CategoriaEmpresaDTO(empresa.getCategoriaEmpresa());
+    this.categoriaEmpresa = new CategoriaDTO(empresa.getCategoriaEmpresa());
     this.funcionarios = new HashSet<>();
     this.projetos = empresa.getProjetos();
     this.times = empresa.getTimes();
@@ -44,7 +43,7 @@ public class EmpresaDto {
     return empresaNome;
   }
 
-  public CategoriaEmpresaDTO getCategoriaEmpresa() {
+  public CategoriaDTO getCategoriaEmpresa() {
     return categoriaEmpresa;
   }
 
